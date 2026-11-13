@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>TradeLearn NG | Learn Finance</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:#f1f5f9;font-family:Arial,sans-serif}
+header{padding:22px 18px;background:#17243a;border-bottom:1px solid #334155}
+.brand{font-size:23px;font-weight:bold;color:#55d6a5}
+header p{color:#aab8cb;font-size:13px}
+main{max-width:700px;margin:auto;padding:20px}
+.welcome{background:linear-gradient(135deg,#174b55,#203d63);padding:24px;border-radius:16px}
+.welcome h1{font-size:25px}
+.muted{color:#aab8cb;line-height:1.6}
+.balance{font-size:26px;font-weight:bold;color:#55d6a5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.card{background:#1b2940;border:1px solid #334155;border-radius:13px;padding:17px}
+.card h3{margin-top:0}
+button{background:#19a879;color:#071b17;border:0;padding:12px 16px;border-radius:9px;font-weight:bold;cursor:pointer}
+button.secondary{background:#334155;color:white}
+section{margin-top:24px}
+.lesson{padding:15px;background:#1b2940;border-radius:12px;margin:10px 0}
+.quiz button{display:block;width:100%;margin:9px 0;text-align:left}
+footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">TradeLearn NG 🇳🇬</div>
+  <p>Your journey to financial knowledge starts here.</p>
+</header>
+
+<main>
+  <div class="welcome">
+    <p>WELCOME TO TRADELEARN NG</p>
+    <h1>Learn. Understand. Grow.</h1>
+    <p class="muted">Explore financial markets, understand charts and build your financial knowledge through interactive lessons.</p>
+    <button onclick="document.getElementById('lessons').scrollIntoView({behavior:'smooth'})">Start learning</button>
+  </div>
+
+  <section>
+    <h2>Your learning dashboard</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>📚 Lessons</h3>
+        <div class="balance">05</div>
+        <p class="muted">Beginner topics</p>
+      </div>
+      <div class="card">
+        <h3>🎓 Progress</h3>
+        <div class="balance" id="progress">0%</div>
+        <p class="muted">Learning completed</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="lessons">
+    <h2>Beginner lessons</h2>
+    <div class="lesson">
+      <h3>01. What is a financial market?</h3>
+      <p class="muted">Learn how people and institutions exchange financial assets.</p>
+    </div>
+    <div class="lesson">
+      <h3>02. Understanding cryptocurrency</h3>
+      <p class="muted">Discover digital assets, blockchain and basic terminology.</p>
+    </div>
+    <div class="lesson">
+      <h3>03. Candlestick charts</h3>
+      <p class="muted">Understand candle bodies, wicks and time intervals.</p>
+    </div>
+    <div class="lesson">
+      <h3>04. Market trends</h3>
+      <p class="muted">Learn what upward, downward and sideways trends mean.</p>
+    </div>
+    <div class="lesson">
+      <h3>05. Financial risk</h3>
+      <p class="muted">Understand uncertainty, volatility and responsible financial decisions.</p>
+    </div>
+  </section>
+
+  <section class="card quiz">
+    <h2>🧠 Knowledge check</h2>
+    <p>What does a candlestick's wick represent?</p>
+    <button class="secondary" onclick="answer(false)">The trading platform's name</button>
+    <button class="secondary" onclick="answer(true)">The high and low prices during the interval</button>
+    <button class="secondary" onclick="answer(false)">The user's account balance</button>
+    <p id="result" class="muted">Choose an answer to test your knowledge.</p>
+  </section>
+</main>
+
+<footer>
+  TradeLearn NG © 2026<br>
+  Educational content only. Not financial advice.
+</footer>
+
+<script>
+let completed = false;
+function answer(correct) {
+  const result = document.getElementById("result");
+  if(correct) {
+    result.textContent = "Correct! A candle's wick shows the high and low prices during its time interval.";
+    if(!completed) {
+      completed = true;
+      document.getElementById("progress").textContent = "20%";
+    }
+  } else {
+    result.textContent = "Not quite. Try again! Think about the highest and lowest prices.";
+  }
+}
+</script>
+</body>
+</html>
