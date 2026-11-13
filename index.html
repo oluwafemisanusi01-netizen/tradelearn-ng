@@ -338,6 +338,18 @@ function tradeLearnUpdateDashboard() {
   document.getElementById("progress-bar").style.width =
   percentage + "%";
 
+  const completionMessage =
+  document.getElementById("completion-message");
+
+if (completionMessage) {
+  if (percentage === 100) {
+    completionMessage.textContent =
+      "🎉 Congratulations! You've explored all five beginner lessons!";
+  } else {
+    completionMessage.textContent = "";
+  }
+}
+
   document.getElementById("best-score").textContent =
     data.bestScore + "/5";
 
