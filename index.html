@@ -85,8 +85,16 @@ footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
   <button type="button" onclick="resetTradeLearnProgress()">
     Reset my progress
   </button>
-</section>
 
+<div class="card">
+  <h3>🏆 Your achievements</h3>
+  <p class="muted">Unlock badges as you learn.</p>
+
+  <div id="achievement-badges">
+    Loading achievements...
+  </div>
+</div>
+</section>
 
 <section id="lessons">
   <h2>Beginner lessons</h2>
@@ -273,6 +281,47 @@ function tradeLearnUpdateDashboard() {
 
   document.getElementById("quiz-attempts").textContent =
     data.attempts;
+  
+  tradeLearnUpdateBadges();
+}
+  
+function tradeLearnUpdateBadges() {
+  const data = tradeLearnGetData();
+
+  const badges = [
+    {
+      name: "First Steps",
+      description: "Explore your first lesson",
+      unlocked: data.lessons.length >= 1
+    },
+    {
+      name: "Knowledge Explorer",
+      description: "Explore all five lessons",
+      unlocked: data.lessons.length >= 5
+    },
+    {
+      name: "Quiz Champion",
+      description: "Score at least 3 out of 5",
+      unlocked: data.bestScore >= 3
+    },
+    {
+      name: "Perfect Score",
+      description: "Get 5 out of 5 in a quiz",
+      unlocked: data.bestScore === 5
+    }
+  ];
+
+  document.getElementById("achievement-badges").innerHTML =
+    badges.map(function(badge) {
+      return `
+        <p>
+          ${badge.unlocked ? "🏅" : "🔒"}
+          <strong>${badge.name}</strong><br>
+          <span class="muted">${badge.description}</span>
+          ${badge.unlocked ? " — Unlocked!" : " — Locked"}
+        </p>
+      `;
+    }).join("");
 }
 
 function tradeLearnTrackLessons() {
