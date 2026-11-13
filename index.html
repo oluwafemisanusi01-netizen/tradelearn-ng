@@ -100,14 +100,214 @@ footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
   </details>
 </section>
 
-  <section class="card quiz">
-    <h2>🧠 Knowledge check</h2>
-    <p>What does a candlestick's wick represent?</p>
-    <button class="secondary" onclick="answer(false)">The trading platform's name</button>
-    <button class="secondary" onclick="answer(true)">The high and low prices during the interval</button>
-    <button class="secondary" onclick="answer(false)">The user's account balance</button>
-    <p id="result" class="muted">Choose an answer to test your knowledge.</p>
-  </section>
+
+<section class="card quiz">
+  <h2>🧠 TradeLearn NG Knowledge Check</h2>
+
+  <p>Test what you have learned from your financial education lessons.</p>
+
+  <div id="quiz-area">
+    <p id="quiz-progress">Question 1 of 5</p>
+
+    <h3 id="quiz-question"></h3>
+
+    <div id="quiz-options"></div>
+
+    <p id="quiz-feedback" aria-live="polite"></p>
+
+    <button id="quiz-next" type="button"
+      onclick="tradeLearnNext()" disabled>
+      Next question
+    </button>
+  </div>
+
+  <div id="quiz-result" style="display:none;">
+    <h3>🎉 Quiz completed!</h3>
+    <p id="quiz-score"></p>
+    <p id="quiz-message"></p>
+    <button type="button" onclick="tradeLearnRestart()">
+      Try again
+    </button>
+  </div>
+</section>
+
+<script>
+const tradeLearnQuestions = [
+  {
+    question: "What is a financial market?",
+    options: [
+      "A place for exchanging financial assets",
+      "A video game",
+      "A shopping mall",
+      "A school subject"
+    ],
+    answer: 0,
+    explanation: "Financial markets help people and institutions exchange financial assets."
+  },
+  {
+    question: "What is cryptocurrency?",
+    options: [
+      "Physical cash",
+      "A type of digital asset",
+      "A paper document",
+      "A bank building"
+    ],
+    answer: 1,
+    explanation: "Cryptocurrency is a digital asset that can use blockchain technology."
+  },
+  {
+    question: "What does a candlestick wick show?",
+    options: [
+      "The company name",
+      "The trading fee",
+      "The highest and lowest prices",
+      "The number of investors"
+    ],
+    answer: 2,
+    explanation: "The wick shows the highest and lowest prices during the selected interval."
+  },
+  {
+    question: "What does a downward market trend mean?",
+    options: [
+      "Prices generally move lower",
+      "Prices never change",
+      "Prices always increase",
+      "The market is closed forever"
+    ],
+    answer: 0,
+    explanation: "A downward trend describes prices generally moving lower over time."
+  },
+  {
+    question: "What is financial risk?",
+    options: [
+      "Guaranteed profit",
+      "The possibility of financial loss",
+      "Free money",
+      "A fixed salary"
+    ],
+    answer: 1,
+    explanation: "Financial risk is the possibility that an uncertain event could cause a loss."
+  }
+];
+
+let tradeLearnIndex = 0;
+let tradeLearnScore = 0;
+let tradeLearnAnswered = false;
+
+function tradeLearnRender() {
+  const q = tradeLearnQuestions[tradeLearnIndex];
+
+  document.getElementById("quiz-progress").textContent =
+    "Question " + (tradeLearnIndex + 1) +
+    " of " + tradeLearnQuestions.length;
+
+  document.getElementById("quiz-question").textContent = q.question;
+
+  document.getElementById("quiz-feedback").textContent = "";
+
+  document.getElementById("quiz-next").disabled = true;
+
+  document.getElementById("quiz-next").textContent =
+    tradeLearnIndex === tradeLearnQuestions.length - 1
+      ? "See my results"
+      : "Next question";
+
+  tradeLearnAnswered = false;
+
+  const options = document.getElementById("quiz-options");
+  options.innerHTML = "";
+
+  q.options.forEach(function(option, index) {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.textContent = option;
+    button.style.display = "block";
+    button.style.width = "100%";
+    button.style.margin = "10px 0";
+    button.style.padding = "14px";
+    button.style.borderRadius = "10px";
+    button.style.border = "1px solid #60738b";
+    button.style.background = "#1b2940";
+    button.style.color = "#ffffff";
+
+    button.onclick = function() {
+      tradeLearnSelect(index);
+    };
+
+    options.appendChild(button);
+  });
+}
+
+function tradeLearnSelect(selected) {
+  if (tradeLearnAnswered) return;
+
+  tradeLearnAnswered = true;
+
+  const q = tradeLearnQuestions[tradeLearnIndex];
+  const feedback = document.getElementById("quiz-feedback");
+  const buttons = document.querySelectorAll("#quiz-options button");
+
+  buttons.forEach(function(button) {
+    button.disabled = true;
+  });
+
+  if (selected === q.answer) {
+    tradeLearnScore++;
+    feedback.textContent = "Correct! +1 learning point. " + q.explanation;
+    feedback.style.color = "#38d9a9";
+  } else {
+    feedback.textContent = "Not quite. " + q.explanation;
+    feedback.style.color = "#ffcc80";
+  }
+
+  document.getElementById("quiz-next").disabled = false;
+}
+
+function tradeLearnNext() {
+  if (!tradeLearnAnswered) return;
+
+  tradeLearnIndex++;
+
+  if (tradeLearnIndex < tradeLearnQuestions.length) {
+    tradeLearnRender();
+  } else {
+    tradeLearnFinish();
+  }
+}
+
+function tradeLearnFinish() {
+  document.getElementById("quiz-area").style.display = "none";
+  document.getElementById("quiz-result").style.display = "block";
+
+  document.getElementById("quiz-score").textContent =
+    "Your score: " + tradeLearnScore + " / " +
+    tradeLearnQuestions.length;
+
+  let message = "Good effort! Review your lessons and try again.";
+
+  if (tradeLearnScore === 5) {
+    message = "Excellent! You answered every question correctly.";
+  } else if (tradeLearnScore >= 3) {
+    message = "Good work! Keep building your financial knowledge.";
+  }
+
+  document.getElementById("quiz-message").textContent = message;
+}
+
+function tradeLearnRestart() {
+  tradeLearnIndex = 0;
+  tradeLearnScore = 0;
+
+  document.getElementById("quiz-area").style.display = "block";
+  document.getElementById("quiz-result").style.display = "none";
+
+  tradeLearnRender();
+}
+
+tradeLearnRender();
+</script>
+
 </main>
 
 <footer>
