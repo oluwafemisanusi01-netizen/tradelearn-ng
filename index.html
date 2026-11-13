@@ -28,6 +28,7 @@ section{margin-top:24px}
 footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
 </style>
 </head>
+  
 <body>
 <header>
   <div class="brand">TradeLearn NG 🇳🇬</div>
@@ -454,6 +455,52 @@ function answer(correct) {
     result.textContent = "Not quite. Try again! Think about the highest and lowest prices.";
   }
 }
+</script>
+  
+<section class="card" id="learner-profile">
+  <h2>👤 Your learner profile</h2>
+  <p class="muted">Choose a nickname for your learning journey.</p>
+
+  <input
+    type="text"
+    id="learner-name"
+    placeholder="Enter your nickname"
+    maxlength="20"
+  >
+
+  <button type="button" onclick="saveLearnerProfile()">
+    Save profile
+  </button>
+
+  <h3 id="profile-welcome">Welcome, learner!</h3>
+</section>
+
+<script>
+function saveLearnerProfile() {
+  const name = document.getElementById("learner-name").value.trim();
+
+  if (!name) {
+    alert("Please enter a nickname.");
+    return;
+  }
+
+  localStorage.setItem("tradelearn_ng_name", name);
+
+  document.getElementById("profile-welcome").textContent =
+    "Welcome to TradeLearn NG, " + name + "!";
+
+  alert("Your learner profile has been saved.");
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+  const savedName = localStorage.getItem("tradelearn_ng_name");
+
+  if (savedName) {
+    document.getElementById("learner-name").value = savedName;
+    document.getElementById("profile-welcome").textContent =
+      "Welcome to TradeLearn NG, " + savedName + "!";
+  }
+});
 </script>
 </body>
 </html>
