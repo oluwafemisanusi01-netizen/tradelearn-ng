@@ -46,6 +46,9 @@ footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
 
 <section>
   <h2>Your learning dashboard</h2>
+  <p id="dashboard-welcome" class="muted">
+  Welcome, learner! Keep building your knowledge.
+</p>
 
   <div class="grid">
     <div class="card">
@@ -476,8 +479,23 @@ function answer(correct) {
 </section>
 
 <script>
+function updateLearnerWelcome(name) {
+  const message = "Welcome to TradeLearn NG, " + name + "!";
+
+  document.getElementById("profile-welcome").textContent = message;
+
+  const dashboardWelcome =
+    document.getElementById("dashboard-welcome");
+
+  if (dashboardWelcome) {
+    dashboardWelcome.textContent =
+      message + " Keep learning!";
+  }
+}
+
 function saveLearnerProfile() {
-  const name = document.getElementById("learner-name").value.trim();
+  const name =
+    document.getElementById("learner-name").value.trim();
 
   if (!name) {
     alert("Please enter a nickname.");
@@ -485,9 +503,7 @@ function saveLearnerProfile() {
   }
 
   localStorage.setItem("tradelearn_ng_name", name);
-
-  document.getElementById("profile-welcome").textContent =
-    "Welcome to TradeLearn NG, " + name + "!";
+  updateLearnerWelcome(name);
 
   alert("Your learner profile has been saved.");
 }
@@ -497,8 +513,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
   if (savedName) {
     document.getElementById("learner-name").value = savedName;
-    document.getElementById("profile-welcome").textContent =
-      "Welcome to TradeLearn NG, " + savedName + "!";
+    updateLearnerWelcome(savedName);
   }
 });
 </script>
