@@ -42,21 +42,47 @@ footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
     <button onclick="document.getElementById('lessons').scrollIntoView({behavior:'smooth'})">Start learning</button>
   </div>
 
-  <section>
-    <h2>Your learning dashboard</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>📚 Lessons</h3>
-        <div class="balance">05</div>
-        <p class="muted">Beginner topics</p>
-      </div>
-      <div class="card">
-        <h3>🎓 Progress</h3>
-        <div class="balance" id="progress">0%</div>
-        <p class="muted">Learning completed</p>
-      </div>
+
+<section>
+  <h2>Your learning dashboard</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>📚 Lessons explored</h3>
+      <div class="balance" id="lessons-completed">0/5</div>
+      <p class="muted">Beginner topics opened</p>
     </div>
-  </section>
+
+    <div class="card">
+      <h3>🎓 Learning progress</h3>
+      <div class="balance" id="progress">0%</div>
+      <p class="muted">Lessons explored</p>
+    </div>
+
+    <div class="card">
+      <h3>🏆 Highest quiz score</h3>
+      <div class="balance" id="best-score">0/5</div>
+      <p class="muted">Your best result</p>
+    </div>
+
+    <div class="card">
+      <h3>⭐ Learning points</h3>
+      <div class="balance" id="learning-points">0</div>
+      <p class="muted">Educational points earned</p>
+    </div>
+
+    <div class="card">
+      <h3>📝 Quiz attempts</h3>
+      <div class="balance" id="quiz-attempts">0</div>
+      <p class="muted">Completed quizzes</p>
+    </div>
+  </div>
+
+  <button type="button" onclick="resetTradeLearnProgress()">
+    Reset my progress
+  </button>
+</section>
+
 
 <section id="lessons">
   <h2>Beginner lessons</h2>
@@ -193,6 +219,90 @@ const tradeLearnQuestions = [
 let tradeLearnIndex = 0;
 let tradeLearnScore = 0;
 let tradeLearnAnswered = false;
+  
+const tradeLearnStorageKey = "tradelearn_ng_progress";
+
+function tradeLearnGetData() {
+  try {
+    return JSON.parse(
+      localStorage.getItem(tradeLearnStorageKey)
+    ) || {
+      lessons: [],
+      attempts: 0,
+      bestScore: 0,
+      points: 0
+    };
+  } catch (error) {
+    return {
+      lessons: [],
+      attempts: 0,
+      bestScore: 0,
+      points: 0
+    };
+  }
+}
+
+function tradeLearnSaveData(data) {
+  localStorage.setItem(
+    tradeLearnStorageKey,
+    JSON.stringify(data)
+  );
+}
+
+function tradeLearnUpdateDashboard() {
+  const data = tradeLearnGetData();
+
+  const completed = data.lessons.length;
+  const percentage = Math.round((completed / 5) * 100);
+
+  document.getElementById("lessons-completed").textContent =
+    completed + "/5";
+
+  document.getElementById("progress").textContent =
+    percentage + "%";
+
+  document.getElementById("best-score").textContent =
+    data.bestScore + "/5";
+
+  document.getElementById("learning-points").textContent =
+    data.points;
+
+  document.getElementById("quiz-attempts").textContent =
+    data.attempts;
+}
+
+function tradeLearnTrackLessons() {
+  document.querySelectorAll("#lessons details.lesson")
+    .forEach(function(lesson, index) {
+      lesson.addEventListener("toggle", function() {
+        if (lesson.open) {
+          const data = tradeLearnGetData();
+          const lessonNumber = index + 1;
+
+          if (!data.lessons.includes(lessonNumber)) {
+            data.lessons.push(lessonNumber);
+            data.points += 1;
+            tradeLearnSaveData(data);
+            tradeLearnUpdateDashboard();
+          }
+        }
+      });
+    });
+}
+
+function resetTradeLearnProgress() {
+  const confirmed = confirm(
+    "Are you sure you want to reset your learning progress?"
+  );
+
+  if (confirmed) {
+    localStorage.removeItem(tradeLearnStorageKey);
+    tradeLearnUpdateDashboard();
+  }
+}
+
+tradeLearnTrackLessons();
+tradeLearnUpdateDashboard();
 
 function tradeLearnRender() {
   const q = tradeLearnQuestions[tradeLearnIndex];
@@ -276,9 +386,23 @@ function tradeLearnNext() {
   }
 }
 
+
 function tradeLearnFinish() {
   document.getElementById("quiz-area").style.display = "none";
   document.getElementById("quiz-result").style.display = "block";
+
+  const data = tradeLearnGetData();
+
+  data.attempts += 1;
+
+  if (tradeLearnScore > data.bestScore) {
+    data.bestScore = tradeLearnScore;
+  }
+
+  data.points += tradeLearnScore;
+
+  tradeLearnSaveData(data);
+  tradeLearnUpdateDashboard();
 
   document.getElementById("quiz-score").textContent =
     "Your score: " + tradeLearnScore + " / " +
@@ -294,6 +418,7 @@ function tradeLearnFinish() {
 
   document.getElementById("quiz-message").textContent = message;
 }
+
 
 function tradeLearnRestart() {
   tradeLearnIndex = 0;
