@@ -26,10 +26,45 @@ section{margin-top:24px}
 .lesson{padding:15px;background:#1b2940;border-radius:12px;margin:10px 0}
 .quiz button{display:block;width:100%;margin:9px 0;text-align:left}
 footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
+/* TradeLearn NG mobile navigation */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #101a30;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 1px solid #34415b;
+}
+
+.site-nav a {
+  color: white;
+  text-decoration: none;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #1d2b45;
+}
+
+.site-nav a:hover {
+  background: #31517d;
+}
 </style>
 </head>
   
 <body>
+<div id="top"></div>
+
+<nav class="site-nav">
+  <a href="#top">Home</a>
+  <a href="#lessons">Lessons</a>
+  <a href="#dashboard">Dashboard</a>
+  <a href="#quiz-area">Quiz</a>
+  <a href="#learner-profile">Profile</a>
+</nav>
 <header>
   <div class="brand">TradeLearn NG 🇳🇬</div>
   <p>Your journey to financial knowledge starts here.</p>
@@ -44,7 +79,7 @@ footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
   </div>
 
 
-<section>
+<section id="dashboard">
   <h2>Your learning dashboard</h2>
   <p id="dashboard-welcome" class="muted">
   Welcome, learner! Keep building your knowledge.
