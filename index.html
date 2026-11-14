@@ -69,7 +69,58 @@ footer{text-align:center;padding:25px;color:#94a3b8;font-size:12px}
   border-radius: 20px;
   transition: width 0.5s ease;
 }
- 
+
+  .certificate-box {
+  background: #ffffff;
+  color: #17233b;
+  border: 5px double #c49a35;
+  border-radius: 12px;
+  padding: 30px 18px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.certificate-box h2 {
+  color: #17233b;
+}
+
+.certificate-box h3 {
+  color: #9b7622;
+  font-size: 22px;
+}
+
+.certificate-box p {
+  line-height: 1.7;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #certificate,
+  #certificate * {
+    visibility: visible;
+  }
+
+  #certificate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white;
+    color: #17233b;
+  }
+
+  #certificate-status,
+  #certificate button {
+    display: none;
+  }
+
+  .certificate-box {
+    border: 6px double #c49a35;
+  }
+}
 </style>
 </head>
   
