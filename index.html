@@ -943,16 +943,22 @@ window.addEventListener("DOMContentLoaded", function() {
   document.getElementById("search-message").textContent = "";
 }
 
-  function toggleTradeLearnTheme() {
+function toggleTradeLearnTheme() {
   document.body.classList.toggle("light-mode");
+
+  const isLight =
+    document.body.classList.contains("light-mode");
+
+  localStorage.setItem(
+    "tradelearn_ng_theme",
+    isLight ? "light" : "dark"
+  );
 
   const button = document.getElementById("theme-button");
 
-  if (document.body.classList.contains("light-mode")) {
-    button.textContent = "🌙 Dark Mode";
-  } else {
-    button.textContent = "☀️ Light Mode";
-  }
+  button.textContent = isLight
+    ? "🌙 Dark Mode"
+    : "☀️ Light Mode";
 }
 </script>
   <footer class="site-footer">
