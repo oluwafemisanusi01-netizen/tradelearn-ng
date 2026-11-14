@@ -725,6 +725,53 @@ function tradeLearnTrackLessons() {
     });
 }
 
+  
+function tradeLearnRecordActivity(lessonName) {
+  const historyKey = "tradelearn_ng_activity";
+
+  let history = JSON.parse(
+    localStorage.getItem(historyKey) || "[]"
+  );
+
+  history.unshift({
+    lesson: lessonName,
+    date: new Date().toLocaleString()
+  });
+
+  history = history.slice(0, 10);
+
+  localStorage.setItem(
+    historyKey,
+    JSON.stringify(history)
+  );
+
+  tradeLearnDisplayActivity();
+}
+
+function tradeLearnDisplayActivity() {
+  const historyKey = "tradelearn_ng_activity";
+
+  const history = JSON.parse(
+    localStorage.getItem(historyKey) || "[]"
+  );
+
+  const container =
+    document.getElementById("activity-history");
+
+  if (!container) return;
+
+  if (history.length === 0) {
+    container.textContent = "No learning activity yet.";
+    return;
+  }
+
+  container.innerHTML = history.map(function(item) {
+    return "<p>📘 " + item.lesson +
+      "<br><small>" + item.date + "</small></p>";
+  }).join("");
+}
+
+
 function resetTradeLearnProgress() {
   const confirmed = confirm(
     "Are you sure? This will reset your lessons, quiz scores, points and achievements."
