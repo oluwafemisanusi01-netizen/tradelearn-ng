@@ -711,6 +711,9 @@ function tradeLearnTrackLessons() {
     .forEach(function(lesson, index) {
       lesson.addEventListener("toggle", function() {
         if (lesson.open) {
+          tradeLearnRecordActivity(
+  lesson.querySelector("summary").textContent
+);
           const data = tradeLearnGetData();
           const lessonNumber = index + 1;
 
