@@ -717,13 +717,23 @@ function tradeLearnTrackLessons() {
 
 function resetTradeLearnProgress() {
   const confirmed = confirm(
-    "Are you sure you want to reset your learning progress?"
+    "Are you sure? This will reset your lessons, quiz scores, points and achievements."
   );
 
-  if (confirmed) {
-    localStorage.removeItem(tradeLearnStorageKey);
-    tradeLearnUpdateDashboard();
+  if (!confirmed) {
+    return;
   }
+
+  localStorage.removeItem(tradeLearnStorageKey);
+
+  tradeLearnIndex = 0;
+  tradeLearnScore = 0;
+  tradeLearnAnswered = false;
+
+  tradeLearnUpdateDashboard();
+  tradeLearnRender();
+
+  alert("Your learning progress has been reset successfully.");
 }
 
 tradeLearnTrackLessons();
