@@ -453,7 +453,7 @@ const certificateContent =
 if (certificateStatus && certificateContent) {
   const data = tradeLearnGetData();
 
-  const allLessonsExplored = data.lessons >= 5;
+  const allLessonsExplored = data.lessons.length >= 5;
   const quizPassed = data.bestScore >= 3;
 
   if (allLessonsExplored && quizPassed) {
