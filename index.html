@@ -888,6 +888,14 @@ window.addEventListener("DOMContentLoaded", function() {
   "input",
   searchTradeLearn
 );
+
+  function clearTradeLearnSearch() {
+  document.getElementById("site-search").value = "";
+
+  searchTradeLearn();
+
+  document.getElementById("search-message").textContent = "";
+}
 </script>
   <footer class="site-footer">
   <h3>TradeLearn NG</h3>
