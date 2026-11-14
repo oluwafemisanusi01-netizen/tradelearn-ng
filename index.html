@@ -444,6 +444,36 @@ if (completionMessage) {
     data.attempts;
   
   tradeLearnUpdateBadges();
+  const certificateStatus =
+  document.getElementById("certificate-status");
+
+const certificateContent =
+  document.getElementById("certificate-content");
+
+if (certificateStatus && certificateContent) {
+  const data = tradeLearnGetData();
+
+  const allLessonsExplored = data.lessons >= 5;
+  const quizPassed = data.bestScore >= 3;
+
+  if (allLessonsExplored && quizPassed) {
+    certificateStatus.textContent =
+      "🎉 Congratulations! Your certificate is unlocked.";
+
+    certificateContent.hidden = false;
+
+    document.getElementById("certificate-name").textContent =
+      localStorage.getItem("tradelearn_ng_name") || "Learner";
+
+    document.getElementById("certificate-date").textContent =
+      "Date earned: " + new Date().toLocaleDateString();
+  } else {
+    certificateStatus.textContent =
+      "Explore all five lessons and score at least 3/5 in the quiz to unlock your certificate.";
+
+    certificateContent.hidden = true;
+  }
+}
 }
   
 function tradeLearnUpdateBadges() {
