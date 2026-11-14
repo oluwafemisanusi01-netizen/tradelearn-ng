@@ -776,6 +776,23 @@ function tradeLearnDisplayActivity() {
       "<br><small>" + item.date + "</small></p>";
   }).join("");
 }
+  
+  
+function tradeLearnClearActivity() {
+  const confirmed = confirm(
+    "Are you sure you want to clear your learning activity history?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  localStorage.removeItem("tradelearn_ng_activity");
+
+  tradeLearnDisplayActivity();
+
+  alert("Your activity history has been cleared.");
+}
 
 
 function resetTradeLearnProgress() {
