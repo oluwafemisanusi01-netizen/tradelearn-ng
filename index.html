@@ -960,6 +960,22 @@ function toggleTradeLearnTheme() {
     ? "🌙 Dark Mode"
     : "☀️ Light Mode";
 }
+
+  window.addEventListener("DOMContentLoaded", function() {
+  const savedTheme =
+    localStorage.getItem("tradelearn_ng_theme");
+
+  const button =
+    document.getElementById("theme-button");
+
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    button.textContent = "🌙 Dark Mode";
+  } else {
+    document.body.classList.remove("light-mode");
+    button.textContent = "☀️ Light Mode";
+  }
+});
 </script>
   <footer class="site-footer">
   <h3>TradeLearn NG</h3>
