@@ -843,6 +843,45 @@ window.addEventListener("DOMContentLoaded", function() {
     updateLearnerWelcome(savedName);
   }
 });
+
+  function searchTradeLearn() {
+  const searchInput =
+    document.getElementById("site-search");
+
+  const message =
+    document.getElementById("search-message");
+
+  const query = searchInput.value.trim().toLowerCase();
+
+  const items = document.querySelectorAll(
+    "#lessons .lesson, #faq .lesson"
+  );
+
+  let matches = 0;
+
+  items.forEach(function(item) {
+    const title = item.querySelector("summary");
+
+    const text = title.textContent.toLowerCase();
+
+    if (query === "" || text.includes(query)) {
+      item.style.display = "";
+      if (query !== "") matches++;
+    } else {
+      item.style.display = "none";
+    }
+  });
+
+  if (query === "") {
+    message.textContent = "";
+  } else if (matches > 0) {
+    message.textContent =
+      matches + " matching result(s) found.";
+  } else {
+    message.textContent =
+      "No matching lessons or FAQ questions found.";
+  }
+}
 </script>
   <footer class="site-footer">
   <h3>TradeLearn NG</h3>
