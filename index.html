@@ -1102,9 +1102,8 @@ window.addEventListener("DOMContentLoaded", function() {
   let matches = 0;
 
   items.forEach(function(item) {
-    const title = item.querySelector("summary");
 
-    const text = title.textContent.toLowerCase();
+    const text = item.textContent.toLowerCase();
 
     if (query === "" || text.includes(query)) {
       item.style.display = "";
