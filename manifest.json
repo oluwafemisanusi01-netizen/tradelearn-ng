@@ -1,0 +1,19 @@
+{
+  "name": "TradeLearn NG",
+  "short_name": "TradeLearn NG",
+  "description": "Learn. Understand. Grow. Financial education for everyone.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1428",
+  "theme_color": "#0a1428",
+  "icons": [
+    {
+      "src": "assets/logo/tradelearn-app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
