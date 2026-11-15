@@ -467,6 +467,31 @@ header {
     Reset My Progress
   </button>
 </div>
+
+    <div class="card">
+  <h3>💾 Progress Backup</h3>
+  <p class="muted">
+    Save a backup of your learning progress or restore it later.
+  </p>
+
+  <button type="button" onclick="tradeLearnExportBackup()">
+    Export My Progress
+  </button>
+
+  <p>Restore from a previous backup:</p>
+
+  <input
+    type="file"
+    id="tradelearn-backup-file"
+    accept=".json,application/json"
+  >
+
+  <button type="button" onclick="tradeLearnImportBackup()">
+    Restore My Progress
+  </button>
+
+  <p id="tradelearn-backup-status" aria-live="polite"></p>
+</div>
 </section>
 
 <section id="lessons">
@@ -1165,6 +1190,108 @@ function toggleTradeLearnTheme() {
 
   <a href="#top">Back to top ↑</a>
 </footer>
+
+  
+<script>
+function tradeLearnExportBackup() {
+  const keys = [
+    "tradelearn_ng_progress",
+    "tradelearn_ng_activity",
+    "tradelearn_ng_name",
+    "tradelearn_ng_theme"
+  ];
+
+  const backup = {
+    app: "TradeLearn NG",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    data: {}
+  };
+
+  keys.forEach(key => {
+    backup.data[key] = localStorage.getItem(key);
+  });
+
+  const blob = new Blob(
+    [JSON.stringify(backup, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "tradelearn-ng-backup.json";
+  link.click();
+
+  URL.revokeObjectURL(url);
+
+  document.getElementById("tradelearn-backup-status").textContent =
+    "Your progress backup has been downloaded.";
+}
+
+function tradeLearnImportBackup() {
+  const fileInput = document.getElementById("tradelearn-backup-file");
+  const status = document.getElementById("tradelearn-backup-status");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    status.textContent = "Please select a backup file first.";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    try {
+      const backup = JSON.parse(event.target.result);
+      const keys = [
+        "tradelearn_ng_progress",
+        "tradelearn_ng_activity",
+        "tradelearn_ng_name",
+        "tradelearn_ng_theme"
+      ];
+
+      if (
+        backup.app !== "TradeLearn NG" ||
+        backup.version !== 1 ||
+        !backup.data ||
+        !keys.every(key =>
+          Object.prototype.hasOwnProperty.call(backup.data, key) &&
+          (backup.data[key] === null || typeof backup.data[key] === "string")
+        )
+      ) {
+        throw new Error("Invalid backup file");
+      }
+
+      const confirmed = confirm(
+        "Restoring this backup will replace your current saved progress. Continue?"
+      );
+
+      if (!confirmed) return;
+
+      keys.forEach(key => {
+        if (backup.data[key] === null) {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, backup.data[key]);
+        }
+      });
+
+      status.textContent =
+        "Backup restored successfully. Reloading your app...";
+
+      setTimeout(() => location.reload(), 1000);
+
+    } catch (error) {
+      status.textContent =
+        "Unable to restore this file. Please select a valid TradeLearn NG backup.";
+    }
+  };
+
+  reader.readAsText(file);
+}
+</script>
 
   <script>
   if ("serviceWorker" in navigator) {
