@@ -1165,5 +1165,15 @@ function toggleTradeLearnTheme() {
 
   <a href="#top">Back to top ↑</a>
 </footer>
+
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(() => console.log("TradeLearn NG service worker registered"))
+        .catch((error) => console.error("Service worker registration failed:", error));
+    });
+  }
+</script>
 </body>
 </html>
